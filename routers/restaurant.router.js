@@ -4,6 +4,8 @@ import { checkRestaurantExistence } from '../middlewares/restaurant.middleware.j
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
+// Lấy thông tin tất cả nhà hàng 
+router.get('/all', RestaurantController.getAllRestaurant);
 
 // Lấy thông tin tất cả nhà hàng
 router.get('/', RestaurantController.getRestaurant);
