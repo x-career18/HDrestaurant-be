@@ -17,9 +17,9 @@ router.get('/:id', RestaurantController.getRestaurantById);
 router.post('/', authMiddleware, RestaurantController.createRestaurant);
 
 // Cập nhật nhà hàng
-router.put('/:id', checkRestaurantExistence, authMiddleware, RestaurantController.updateRestaurant);
+router.put('/:id', authMiddleware, RestaurantController.updateRestaurant);
 
 //Xóa nhà hàng
-router.delete('/:id', checkRestaurantExistence, authMiddleware, RestaurantController.deleteRestaurant);
+router.delete('/:id', authMiddleware, RestaurantController.deleteRestaurant);
 
 export default router;
