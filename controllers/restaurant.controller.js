@@ -87,13 +87,20 @@ const updateRestaurant = async (req, res) => {
     try {
         const restaurant = await RestaurantModel.findById(id);
 
-        // Kiểm tra xem có quyền sửa nhà hàng hay không
-        if (restaurant.idManager !== req.user.id || !restaurant.isVerified) {
-            return res.status(403).json({ message: 'Bạn không có quyền sửa nhà hàng này hoặc nhà nhà không tồn tại.' });
-        }
+        // Kiểm tra xem người dùng có vai trò "admin" không
+        if (req.user.role === 'admin') {
+            // Nếu là admin, không cần kiểm tra idManager, cho phép sửa
+            const updatedRestaurant = await RestaurantModel.findByIdAndUpdate(id, req.body, { new: true });
+            res.json(updatedRestaurant);
+        } else {
+            // Nếu không phải là admin, kiểm tra xem có quyền sửa nhà hàng hay không
+            if (restaurant.idManager !== req.user.id) {
+                return res.status(403).json({ message: 'Bạn không có quyền sửa nhà hàng này.' });
+            }
 
-        const updatedRestaurant = await RestaurantModel.findByIdAndUpdate(id, req.body, { new: true });
-        res.json(updatedRestaurant);
+            const updatedRestaurant = await RestaurantModel.findByIdAndUpdate(id, req.body, { new: true });
+            res.json(updatedRestaurant);
+        }
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -104,13 +111,20 @@ const deleteRestaurant = async (req, res) => {
     try {
         const restaurant = await RestaurantModel.findById(id);
 
-        // Kiểm tra xem có quyền xóa nhà hàng hay không
-        if (restaurant.idManager !== req.user.id || !restaurant.isVerified) {
-            return res.status(403).json({ message: 'Bạn không có quyền xóa nhà hàng này.' });
-        }
+        // Kiểm tra xem người dùng có vai trò "admin" không
+        if (req.user.role === 'admin') {
+            // Nếu là admin, không cần kiểm tra idManager, cho phép xóa
+            await RestaurantModel.findByIdAndDelete(id);
+            res.json({ message: 'Deleted successfully.' });
+        } else {
+            // Nếu không phải là admin, kiểm tra xem có quyền xóa nhà hàng hay không
+            if (restaurant.idManager !== req.user.id) {
+                return res.status(403).json({ message: 'Bạn không có quyền xóa nhà hàng này.' });
+            }
 
-        await RestaurantModel.findByIdAndDelete(id);
-        res.json({ message: 'Deleted successfully.' });
+            await RestaurantModel.findByIdAndDelete(id);
+            res.json({ message: 'Deleted successfully.' });
+        }
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
