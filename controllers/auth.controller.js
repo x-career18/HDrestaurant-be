@@ -29,7 +29,7 @@ const register = asyncHandler(async (req, res) => {
         // Determine role and create new user accordingly
         let role = ROLE_LIST.MANAGER;
         let employeeCode;
-        
+
 
         if (idRestaurant) {
             const restaurant = await RestaurantModel.findOne({ idRestaurant });
@@ -68,14 +68,14 @@ const login = asyncHandler(async (req, res) => {
         const existingUser = await UserModel.findOne({ email });
         if (!existingUser) {
             res.status(401);
-            throw new Error("Invalid credentials");
+            throw new Error("Thông tin đăng nhập không hợp lệ!");
         }
 
         //2. Check password
         const passwordCorrect = await bcrypt.compare(password, existingUser.password);
         if (!passwordCorrect) {
             res.status(401);
-            throw new Error("Email or password is not correct!");
+            throw new Error("Email hoặc mật khẩu không đúng!");
         }
 
         // 3. Check role and isActive
@@ -98,9 +98,12 @@ const login = asyncHandler(async (req, res) => {
             fullname: existingUser.fullname,
             role,
         };
+
         const token = jwt.sign(jwtPayload, process.env.SECRET_KEY, {
             expiresIn: "1d",
         });
+
+        res.header("token", token);
 
         res.status(200).json({
             accessToken: token,
