@@ -56,7 +56,7 @@ const getProfileId = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     try {
-        const userId = req.user._id;
+        const userId = req.user.id;
         const user = await UserModel.findById(userId);
 
         if (!user) {
@@ -96,7 +96,7 @@ const updateProfile = async (req, res) => {
 
 const deleteProfile = async (req, res) => {
     try {
-        const userId = req.user._id;
+        const userId = req.user.id;
         const user = await UserModel.findById(userId);
 
         if (!user) {
