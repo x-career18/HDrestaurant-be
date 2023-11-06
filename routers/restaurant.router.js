@@ -1,6 +1,5 @@
 import express from 'express';
 import RestaurantController from '../controllers/restaurant.controller.js';
-import { checkRestaurantExistence } from '../middlewares/restaurant.middleware.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
