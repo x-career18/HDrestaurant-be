@@ -88,7 +88,7 @@ const updateRestaurant = async (req, res) => {
         const restaurant = await RestaurantModel.findById(id);
 
         // Kiểm tra xem người dùng có vai trò "admin" không
-        if (req.user.role === 'admin') {
+        if (req.user.role === ROLE_LIST.ADMIN) {
             // Nếu là admin, không cần kiểm tra idManager, cho phép sửa
             const updatedRestaurant = await RestaurantModel.findByIdAndUpdate(id, req.body, { new: true });
             res.json(updatedRestaurant);
@@ -112,7 +112,7 @@ const deleteRestaurant = async (req, res) => {
         const restaurant = await RestaurantModel.findById(id);
 
         // Kiểm tra xem người dùng có vai trò "admin" không
-        if (req.user.role === 'admin') {
+        if (req.user.role === ROLE_LIST.ADMIN) {
             // Nếu là admin, không cần kiểm tra idManager, cho phép xóa
             await RestaurantModel.findByIdAndDelete(id);
             res.json({ message: 'Deleted successfully.' });
