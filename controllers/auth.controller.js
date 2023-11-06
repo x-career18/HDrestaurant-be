@@ -48,7 +48,7 @@ const register = asyncHandler(async (req, res) => {
             password: hashedPassword,
             role,
             phonenumber,
-            isActive: role === ROLE_LIST.MANAGER,
+            isActive: false,
             idRestaurant,
             employeeCode,
         });
