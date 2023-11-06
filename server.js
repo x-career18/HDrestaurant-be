@@ -11,12 +11,12 @@ const PORT = 5000;
 connectDB();
 // 2. Global middlewares
 app.use(express.json());
-app.use(cors("*"));
+app.use(cors());
 app.use((req, res, next) => {
-    // Thiết lập header Cache-Control với max-age (thời gian cache) là 3600 giây (1 giờ)
-    res.header('Cache-Control', 'public, max-age=3600');
+    res.header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+    res.header("Pragma", "no-cache");
     next();
-});
+  });
 // 3. Routing
 app.use('/api/v1', router);
 // 4. Error handling
