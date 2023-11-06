@@ -55,74 +55,55 @@ const getProfileId = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
+    const { id } = req.params;
     try {
-        const userId = req.user.id;
-        const user = await UserModel.findById(userId);
+        const user = await UserModel.findById(id);
 
         if (!user) {
             return res.status(404).json({ message: "Không tìm thấy người dùng" });
         }
 
-        const { fullname, phonenumber } = req.body;
-        if (!fullname || !phonenumber) {
-            return res.status(400).json({ message: "Vui lòng nhập đầy đủ thông tin" });
+        const { fullname, email, phonenumber, isActive } = req.body;
+
+
+        if (fullname) {
+            user.fullname = fullname;
         }
 
-        // Kiểm tra vai trò của người dùng
-        if (user.role === ROLE_LIST.ADMIN) {
-            // Nếu là quản lý hoặc admin, cho phép sửa thông tin của cả quản lý và nhân viên
-            user.fullname = fullname;
-            user.phonenumber = phonenumber;
-        } else if (user.role === ROLE_LIST.MANAGER) {
-            // Nếu là quản lý, chỉ cho phép sửa thông tin của nhân viên
-            if (user.role !== ROLE_LIST.EMPLOYEE) {
-                return res.status(403).json({ message: "Bạn không có quyền sửa thông tin này" });
-            }
-
-            user.fullname = fullname;
-            user.phonenumber = phonenumber;
-        } else {
-            return res.status(403).json({ message: "Bạn không có quyền sửa thông tin" });
+        if (email) {
+            user.email = email;
         }
 
-        await user.save();
+        if (phonenumber) {
+            user.phonenumber = phonenumber;
+        }
 
-        res.status(200).json({ message: "Cập nhật thông tin thành công" });
+        if (typeof isActive === 'boolean') {
+            user.isActive = isActive;
+        }
+
+        const updatedUser = await user.save();
+        res.status(200).json(updatedUser);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message });
+        // Xử lý lỗi ở đây nếu cần
+        res.status(500).json({ message: "Lỗi khi cập nhật thông tin người dùng" });
     }
 };
 
 const deleteProfile = async (req, res) => {
+    const { id } = req.params;
     try {
-        const userId = req.user.id;
-        const user = await UserModel.findById(userId);
+        const user = await UserModel.findById(id);
 
         if (!user) {
             return res.status(404).json({ message: "Không tìm thấy người dùng" });
         }
 
-        // Kiểm tra vai trò của người dùng
-        if (user.role === ROLE_LIST.ADMIN) {
-            // Nếu là quản lý hoặc admin, cho phép xóa cả quản lý và nhân viên
-            await user.remove();
-        } else if (user.role === ROLE_LIST.MANAGER) {
-            // Nếu là quản lý, chỉ cho phép xóa nhân viên
-            if (user.role !== ROLE_LIST.EMPLOYEE) {
-                return res.status(403).json({ message: "Bạn không có quyền xóa người dùng" });
-            }
-
-            await user.remove();
-        } else {
-            return res.status(403).json({ message: "Bạn không có quyền xóa người dùng" });
-        }
-
+        await user.remove();
         res.status(200).json({ message: "Xóa người dùng thành công" });
-
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message });
+        // Xử lý lỗi ở đây nếu cần
+        res.status(500).json({ message: "Lỗi khi xóa người dùng" });
     }
 };
 
