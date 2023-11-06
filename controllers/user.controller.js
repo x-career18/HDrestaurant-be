@@ -93,16 +93,13 @@ const updateProfile = async (req, res) => {
 const deleteProfile = async (req, res) => {
     const { id } = req.params;
     try {
-        const user = await UserModel.findById(id);
+        const user = await UserModel.findByIdAndDelete(id);
 
         if (!user) {
             return res.status(404).json({ message: "Không tìm thấy người dùng" });
         }
-
-        await user.remove();
         res.status(200).json({ message: "Xóa người dùng thành công" });
     } catch (error) {
-        // Xử lý lỗi ở đây nếu cần
         res.status(500).json({ message: "Lỗi khi xóa người dùng" });
     }
 };
