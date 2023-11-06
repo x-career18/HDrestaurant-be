@@ -1,16 +1,43 @@
 import UserModel from "../models/user.model.js";
 import { ROLE_LIST } from "../constants.js";
 
-const getProfile = async (req, res) => {
+const getAllUser = async (req, res) => {
     try {
-        const userId = req.user._id;
-        const users = await UserModel.findById(userId);
+        const users = await UserModel.find();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const getManager = async (req, res) => {
+    try {
+        const users = await UserModel.find({ role: ROLE_LIST.MANAGER });
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const getEmployee = async (req, res) => {
+    try {
+        const users = await UserModel.find({ role: ROLE_LIST.EMPLOYEE });
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const getProfileId = async (req, res) => {
+    try {
+        const { id } = req.user;
+        const users = await UserModel.findById(id)
 
         if (!users) {
             return res.status(404).json({ message: "Không tìm thấy người dùng" });
         }
 
-        const usserProfile = {
+        const userProfile = {
             _id: users._id,
             fullname: users.fullname,
             email: users.email,
@@ -20,7 +47,7 @@ const getProfile = async (req, res) => {
             idRestaurant: users.idRestaurant,
             employeeCode: users.employeeCode,
         };
-        res.status(200).json(usserProfile);
+        res.status(200).json(userProfile);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message });
@@ -124,7 +151,10 @@ const changePassword = async (req, res) => {
 };
 
 const UserController = {
-    getProfile,
+    getAllUser,
+    getManager,
+    getEmployee,
+    getProfileId,
     updateProfile,
     deleteProfile,
     changePassword,
