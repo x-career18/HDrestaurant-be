@@ -13,10 +13,10 @@ connectDB();
 app.use(express.json());
 app.use(cors());
 app.use((req, res, next) => {
-    res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.header('Expires', '0');
+    res.header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+    res.header("Pragma", "no-cache");
     next();
-});
+  });
 // 3. Routing
 app.use('/api/v1', router);
 // 4. Error handling
