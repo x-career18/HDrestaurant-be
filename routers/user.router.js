@@ -7,7 +7,7 @@ const router = express.Router();
 // Lấy thông tin tất cả quản lý
 router.get('/manage', UserController.getManager);
 // Lấy thông tin tất cả nhân viên
-router.get('/employee', UserController.getEmployee);
+router.get('/employee',authMiddleware , UserController.getEmployee);
 // Lấy thông tin tất cả người dùng
 router.get('/', UserController.getAllUser);
 // Lấy thông tin id người dùng
