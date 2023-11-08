@@ -1,6 +1,7 @@
 import UserModel from "../models/user.model.js";
 import { ROLE_LIST } from "../constants.js";
 import bcrypt from 'bcrypt';
+import RestaurantModel from "../models/restaurant.model.js";
 
 const getAllUser = async (req, res) => {
     try {
@@ -22,8 +23,19 @@ const getManager = async (req, res) => {
 
 const getEmployee = async (req, res) => {
     try {
-        const users = await UserModel.find({ role: ROLE_LIST.EMPLOYEE });
-        res.json(users);
+        const managerUserId = req.user._id; // Lấy _id của người quản lý từ req.user
+
+        // Tìm nhà hàng mà người quản lý quản lý
+        const managedRestaurant = await RestaurantModel.findOne({ idManager: managerUserId });
+
+        if (!managedRestaurant) {
+            return res.status(403).json({ message: "Người quản lý không quản lý bất kỳ nhà hàng nào." });
+        }
+
+        // Tìm tất cả người dùng có role là 'Employee' và có idRestaurant trùng với idRestaurant của người quản lý
+        const employees = await UserModel.find({ role: ROLE_LIST.EMPLOYEE, idRestaurant: managedRestaurant._id });
+
+        res.json(employees);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
