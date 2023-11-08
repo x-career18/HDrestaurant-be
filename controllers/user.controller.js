@@ -1,5 +1,6 @@
 import UserModel from "../models/user.model.js";
 import { ROLE_LIST } from "../constants.js";
+import bcrypt from 'bcrypt';
 
 const getAllUser = async (req, res) => {
     try {
@@ -63,7 +64,7 @@ const updateProfile = async (req, res) => {
             return res.status(404).json({ message: "Không tìm thấy người dùng" });
         }
 
-        const { fullname, email, phonenumber, isActive } = req.body;
+        const { fullname, email, password, newPassword, phonenumber, isActive } = req.body;
 
 
         if (fullname) {
@@ -80,6 +81,19 @@ const updateProfile = async (req, res) => {
 
         if (typeof isActive === 'boolean') {
             user.isActive = isActive;
+        }
+
+        if (password && newPassword) {
+            // Kiểm tra xem mật khẩu cũ có trùng với mật khẩu mới không
+            const isPasswordMatch = bcrypt.compareSync(password, user.password);
+            if (!isPasswordMatch) {
+                return res.status(400).json({ message: "Mật khẩu cũ không đúng" });
+            }
+
+            // Băm và lưu mật khẩu mới
+            const saltRounds = 10;
+            const hashedPassword = bcrypt.hashSync(newPassword, saltRounds);
+            user.password = hashedPassword;
         }
 
         const updatedUser = await user.save();
