@@ -3,6 +3,24 @@ import RestaurantModel from "../models/restaurant.model.js";
 import { randomString } from "../utils/GeneratorUtils.js";
 import { checkManagerAndIsVerified } from "../utils/checkManagerAndVerified.js";
 
+const getMenus = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const restaurant = await RestaurantModel.findOne({ idManager: userId });
+
+        const isManagerAndVerified = await checkManagerAndIsVerified(userId);
+
+        if (!isManagerAndVerified) {
+            return res.status(403).json({ message: 'Bạn không có quyền thực hiện chức năng này.' });
+        }
+
+        const menus = await MenuModel.find({ idRestaurant: restaurant.idRestaurant });
+        res.json(menus);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
 const createMenu = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -73,6 +91,7 @@ const deleteMenu = async (req, res) => {
 };
 
 const MenuController = {
+    getMenus,
     createMenu,
     updateMenu,
     deleteMenu,

@@ -3,6 +3,10 @@ import MenuController from '../controllers/menu.controller.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
+
+// Lấy danh sách menu
+router.get('/', authMiddleware, MenuController.getMenus);4
+
 // Tạo mới menu
 router.post('/', authMiddleware, MenuController.createMenu);
 
