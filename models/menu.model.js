@@ -11,7 +11,7 @@ const MenuSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['món ăn', 'đồ uống'],
+        enum: ['Món ăn', 'Đồ uống'],
         required: true,
     },
     description: {
