@@ -99,6 +99,7 @@ const login = asyncHandler(async (req, res) => {
             email: existingUser.email,
             id: existingUser.id,
             fullname: existingUser.fullname,
+            restaurantId: existingUser.restaurantId,
             role,
         };
 
