@@ -1,5 +1,6 @@
 import express from 'express';
 import BookingController from '../controllers/booking.controller.js';
+import BookMiddleware from '../middlewares/booking.middleware.js';
 
 const router = express.Router();
 
@@ -7,7 +8,7 @@ const router = express.Router();
 router.get('/', BookingController.getBooking);
 
 // Tạo mới đặt bàn
-router.post('/', BookingController.createBooking);
+router.post('/', BookMiddleware , BookingController.createBooking);
 
 // Lấy thông tin đặt bàn theo id
 router.get('/:id', BookingController.getBookingById);
