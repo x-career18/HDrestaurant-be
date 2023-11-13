@@ -1,10 +1,20 @@
 import BookingModel from "../models/booking.model.js";
+import { Status } from '../constants.js';
+import { ROLE_LIST } from '../constants.js';
 
 // tạo mới booking
 const createBooking = async (req, res) => {
     try {
-        const { fullName, phoneNumber, bookingDate, bookingTime, numberOfPeople, email, message , restaurantId } = req.body;
+        const { fullName, phoneNumber, bookingDate, bookingTime, numberOfPeople, email, message, restaurantId } = req.body;
 
+
+        let bookingStatus;
+
+        if (req.user && req.user.role === ROLE_LIST.EMPLOYEE) {
+            bookingStatus = Status.ACTIVE;
+        } else {
+            bookingStatus = Status.PENDING;
+        }
         const newBooking = new BookingModel({
             fullName,
             phoneNumber,
@@ -14,6 +24,7 @@ const createBooking = async (req, res) => {
             email,
             message,
             restaurantId,
+            status: bookingStatus,
         });
 
         const savedBooking = await newBooking.save();

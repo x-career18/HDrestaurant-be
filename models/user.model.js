@@ -36,6 +36,11 @@ const UserSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    restaurantId :{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Restaurant',
+      required: true,
+    }
   },
   { timestamps: true }
 );

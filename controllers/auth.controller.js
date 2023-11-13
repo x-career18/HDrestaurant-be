@@ -29,6 +29,7 @@ const register = asyncHandler(async (req, res) => {
         // Determine role and create new user accordingly
         let role = ROLE_LIST.MANAGER;
         let employeeCode;
+        let restaurantId;
 
 
         if (idRestaurant) {
@@ -37,6 +38,7 @@ const register = asyncHandler(async (req, res) => {
             if (restaurant && restaurant.isVerified) {
                 role = ROLE_LIST.EMPLOYEE;
                 employeeCode = GenerateEmployeeCode();
+                restaurantId = restaurant._id;
             } else {
                 return res.status(400).json({ message: 'Nhà hàng chưa được xác nhận.' });
             }
@@ -51,6 +53,7 @@ const register = asyncHandler(async (req, res) => {
             isActive: false,
             idRestaurant,
             employeeCode,
+            restaurantId,
         });
 
         const savedUser = await newUser.save();
