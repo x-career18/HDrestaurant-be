@@ -24,6 +24,8 @@ const createBooking = async (req, res) => {
             email,
             message,
             restaurantId,
+            employeeName: req.user ? req.user.fullname : null,
+            employeeCode: req.user ? req.user.employeeCode : null,
             status: bookingStatus,
         });
 
