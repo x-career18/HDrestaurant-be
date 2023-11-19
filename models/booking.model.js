@@ -34,6 +34,12 @@ const BookingSchema = new mongoose.Schema({
         ref: 'Restaurant',
         required: true,
     },
+    employeeName: {
+        type: String,
+    },
+    employeeCode: {
+        type: String,
+    },
     status: {
         type: String,
         enum: Status,

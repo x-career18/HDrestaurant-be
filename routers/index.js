@@ -4,6 +4,7 @@ import restaurantRouter from './restaurant.router.js';
 import menuRouter from './menu.router.js';
 import bookingRouter from './booking.router.js';
 import userRouter from './user.router.js';
+import billRouter from './bill.router.js';
 
 const router = express.Router();
 
@@ -16,5 +17,7 @@ router.use('/menus', menuRouter);
 router.use('/bookings', bookingRouter);
 
 router.use('/users', userRouter);
+
+router.use('/bills', billRouter);
 
 export default router;
