@@ -11,7 +11,7 @@ const PORT = 5000;
 connectDB();
 // 2. Global middlewares
 app.use(express.json());
-app.use(cors());
+app.use(cors("*"));
 app.use((req, res, next) => {
     res.header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
     res.header("Pragma", "no-cache");
