@@ -12,7 +12,7 @@ connectDB();
 // 2. Global middlewares
 app.use(express.json());
 app.use(cors({
-  origin: ['https://restaurantad.netlify.app', 'https://restaurantclient.vercel.app'],
+  origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
