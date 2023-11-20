@@ -5,7 +5,7 @@ import { authMiddleware } from '../middlewares/auth.middleware.js';
 const router = express.Router();
 
 // Lấy thông tin tất cả quản lý
-router.get('/manage', UserController.getManager);
+router.get('/manager', UserController.getManager);
 // Lấy thông tin tất cả nhân viên
 router.get('/employee',authMiddleware , UserController.getEmployee);
 // Lấy thông tin tất cả người dùng
