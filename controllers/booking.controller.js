@@ -66,7 +66,8 @@ const updateBooking = async (req, res) => {
 
         const updatedBooking = await BookingModel.findByIdAndUpdate(
             req.params.id,
-            { fullName, phoneNumber, bookingDate, bookingTime, numberOfPeople, email, message, status: Status.ACTIVE, employeeName: req.user.fullname, employeeCode: req.user.employeeCode },
+            { fullName, phoneNumber, bookingDate, bookingTime, numberOfPeople, email, message, status: Status.ACTIVE, employeeName: req.user ? req.user.fullname : null,
+                employeeCode: req.user ? req.user.employeeCode : null, },
             { new: true }
         );
 

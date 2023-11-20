@@ -15,7 +15,7 @@ router.post('/', BookMiddleware , checkDuplicateBooking , BookingController.crea
 router.get('/:id', BookingController.getBookingById);
 
 // Cập nhật thông tin đặt bàn
-router.put('/:id', BookingController.updateBooking);
+router.put('/:id',BookMiddleware, BookingController.updateBooking);
 
 // Xóa đặt bàn
 router.delete('/:id', BookingController.deleteBooking);
