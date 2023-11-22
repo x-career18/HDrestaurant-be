@@ -3,7 +3,7 @@ import { Status } from "../constants.js";
 
 const BillSchema = new mongoose.Schema(
     {
-        customerName: {
+        fullName: {
             type: String,
             required: true,
         },

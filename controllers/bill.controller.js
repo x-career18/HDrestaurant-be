@@ -26,10 +26,10 @@ const getBillById = async (req, res) => {
 // Tạo mới bill
 const createBill = async (req, res) => {
     try {
-        const { customerName, phoneNumber, dishes, discount, totalAmount, paymentMethod } = req.body;
+        const { fullName, phoneNumber, dishes, discount, totalAmount, paymentMethod } = req.body;
 
         const newBill = new BillModel({
-            customerName,
+            fullName,
             phoneNumber,
             dishes,
             discount,
@@ -47,14 +47,14 @@ const createBill = async (req, res) => {
 // cập nhật thông tin bill
 const updateBill = async (req, res) => {
     try {
-        const { customerName, phoneNumber, dishes, discount, totalAmount, paymentMethod } = req.body;
+        const { fullName, phoneNumber, dishes, discount, totalAmount, paymentMethod } = req.body;
 
         const bill = await BillModel.findById(req.params.id);
         if (!bill) {
             return res.status(404).json({ message: "Không tìm thấy bill" });
         }
 
-        bill.customerName = customerName;
+        bill.fullName = fullName;
         bill.phoneNumber = phoneNumber;
         bill.dishes = dishes;
         bill.discount = discount;
