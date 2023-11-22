@@ -11,6 +11,10 @@ async function checkManagerAndIsVerified(userId) {
             throw new Error('Không tìm thấy người dùng'); // Báo lỗi nếu không tìm thấy người dùng
         }
 
+        if (user.role === ROLE_LIST.EMPLOYEE) {
+            return true; // Nếu là nhân viên, không cần kiểm tra nhà hàng
+        }
+
         if (user.role !== ROLE_LIST.MANAGER) {
             throw new Error('Người dùng không phải là Manager'); // Báo lỗi nếu role không phải là Manager
         }

@@ -14,6 +14,7 @@ const BillSchema = new mongoose.Schema(
         dishes: [
             {
                 dishName: String,
+                category: String,
                 quantity: Number,
                 discount: Number,
                 total: Number,
@@ -35,6 +36,9 @@ const BillSchema = new mongoose.Schema(
             type: String,
             enum: ['transfer', 'cash'],
             required: true,
+        },
+        employeeCode: {
+            type: String,
         },
         status: {
             type: String,

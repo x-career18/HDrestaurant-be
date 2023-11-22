@@ -1,21 +1,35 @@
 import MenuModel from "../models/menu.model.js";
 import RestaurantModel from "../models/restaurant.model.js";
 import { randomString } from "../utils/GeneratorUtils.js";
+import { ROLE_LIST } from "../constants.js";
 import { checkManagerAndIsVerified } from "../utils/checkManagerAndVerified.js";
+import UserModel from "../models/user.model.js";
 
 const getMenus = async (req, res) => {
     try {
         const userId = req.user.id;
-        const restaurant = await RestaurantModel.findOne({ idManager: userId });
-
-        const isManagerAndVerified = await checkManagerAndIsVerified(userId);
-
-        if (!isManagerAndVerified) {
-            return res.status(403).json({ message: 'Bạn không có quyền thực hiện chức năng này.' });
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Không tìm thấy người dùng.' });
         }
 
-        const menus = await MenuModel.find({ idRestaurant: restaurant.idRestaurant });
-        res.json(menus);
+        if (user.role === ROLE_LIST.EMPLOYEE) {
+            const menusEmployee = await MenuModel.find({ idRestaurant: user.idRestaurant });
+            return res.json(menusEmployee);
+        }
+
+        if (user.role === ROLE_LIST.MANAGER) {
+            const restaurant = await RestaurantModel.findOne({ idManager: userId });
+
+            const isManagerAndVerified = await checkManagerAndIsVerified(userId);
+
+            if (!isManagerAndVerified) {
+                return res.status(403).json({ message: 'Bạn không có quyền thực hiện chức năng này.' });
+            }
+
+            const menus = await MenuModel.find({ idRestaurant: restaurant.idRestaurant });
+            res.json(menus);
+        }
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

@@ -101,6 +101,7 @@ const login = asyncHandler(async (req, res) => {
             fullname: existingUser.fullname,
             restaurantId: existingUser.restaurantId,
             employeeCode: existingUser.employeeCode,
+            idRestaurant: existingUser.idRestaurant,
             role,
         };
 
