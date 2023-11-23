@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Status } from "../constants.js";
 
 const ReportSchema = new mongoose.Schema(
   {
@@ -13,6 +14,11 @@ const ReportSchema = new mongoose.Schema(
     message: {
       type: String,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: Status,
+      default: Status.PENDING,
     },
   },
   { timestamps: true }
