@@ -69,17 +69,31 @@ const updateMenu = async (req, res) => {
     try {
         const userId = req.user.id;
 
-        const isManagerAndVerified = await checkManagerAndIsVerified(userId);
-
-        if (!isManagerAndVerified) {
-            return res.status(403).json({ message: 'Bạn không có quyền thực hiện chức năng này.' });
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Không tìm thấy người dùng.' });
         }
 
-        const menuId = req.params.id;
-        const { name, category, description, price, discount } = req.body;
+        if (user.role === ROLE_LIST.EMPLOYEE) {
+            const menuId = req.params.id;
+            const { name, category, description, price, discount, quantity } = req.body;
+            const updatedMenuEmployee = await MenuModel.findByIdAndUpdate(menuId, { name, category, description, price, discount, quantity }, { new: true });
+            return res.json(updatedMenuEmployee);
+        }
 
-        const updatedMenu = await MenuModel.findByIdAndUpdate(menuId, { name, category, description, price, discount }, { new: true });
-        res.json(updatedMenu);
+        if (user.role === ROLE_LIST.MANAGER) {
+            const isManagerAndVerified = await checkManagerAndIsVerified(userId);
+
+            if (!isManagerAndVerified) {
+                return res.status(403).json({ message: 'Bạn không có quyền thực hiện chức năng này.' });
+            }
+
+            const menuId = req.params.id;
+            const { name, category, description, price, discount } = req.body;
+
+            const updatedMenu = await MenuModel.findByIdAndUpdate(menuId, { name, category, description, price, discount }, { new: true });
+            res.json(updatedMenu);
+        }
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
