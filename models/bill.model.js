@@ -35,7 +35,6 @@ const BillSchema = new mongoose.Schema(
         paymentMethod: {
             type: String,
             enum: ['transfer', 'cash'],
-            required: true,
         },
         employeeCode: {
             type: String,
