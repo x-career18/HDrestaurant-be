@@ -39,6 +39,9 @@ const BillSchema = new mongoose.Schema(
         employeeCode: {
             type: String,
         },
+        idRestaurant: {
+            type: String,      
+        },
         status: {
             type: String,
             enum: Status,
