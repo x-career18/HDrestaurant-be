@@ -48,7 +48,7 @@ const createBill = async (req, res) => {
 // cập nhật thông tin bill
 const updateBill = async (req, res) => {
     try {
-        const { fullName, phoneNumber, dishes, discount, totalAmount, paymentMethod } = req.body;
+        const { fullName, phoneNumber, dishes, totalAmount, paymentMethod , status} = req.body;
 
         const bill = await BillModel.findById(req.params.id);
         if (!bill) {
@@ -58,9 +58,9 @@ const updateBill = async (req, res) => {
         bill.fullName = fullName;
         bill.phoneNumber = phoneNumber;
         bill.dishes = dishes;
-        bill.discount = discount;
         bill.totalAmount = totalAmount;
         bill.paymentMethod = paymentMethod;
+        bill.status = status;
 
         const savedBill = await bill.save();
         res.status(200).json(savedBill);

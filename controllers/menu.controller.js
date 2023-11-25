@@ -46,7 +46,7 @@ const createMenu = async (req, res) => {
             return res.status(403).json({ message: 'Bạn không có quyền thực hiện chức năng này.' });
         }
 
-        const { name, category, description, price, discount } = req.body;
+        const { name, category, description, price, discount, quantity } = req.body;
 
         const newMenu = new MenuModel({
             code: 'M_' + randomString(3),
@@ -55,6 +55,7 @@ const createMenu = async (req, res) => {
             description,
             price,
             discount,
+            quantity,
             idRestaurant: restaurant.idRestaurant,
         });
 
@@ -89,9 +90,9 @@ const updateMenu = async (req, res) => {
             }
 
             const menuId = req.params.id;
-            const { name, category, description, price, discount } = req.body;
+            const { name, category, description, price, discount, quantity } = req.body;
 
-            const updatedMenu = await MenuModel.findByIdAndUpdate(menuId, { name, category, description, price, discount }, { new: true });
+            const updatedMenu = await MenuModel.findByIdAndUpdate(menuId, { name, category, description, price, discount, quantity}, { new: true });
             res.json(updatedMenu);
         }
     } catch (error) {
