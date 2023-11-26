@@ -25,8 +25,8 @@ const getBillById = async (req, res) => {
 };
 const getBillByBooking = async (req, res) => {
     try {
-        const bill = await BillModel.findOne({ bookingId: req.params.bookingId });
-        console.log(req.params.bookingId, "bookingId");
+        const bill = await BillModel.findOne({ bookingId: req.params.id });
+        console.log(req.params, "bookingId");
         if (!bill) {
             return res.status(404).json({ message: "Không tìm thấy bill" });
         }
