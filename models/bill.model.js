@@ -42,6 +42,9 @@ const BillSchema = new mongoose.Schema(
         idRestaurant: {
             type: String,      
         },
+        bookingId: {
+            type: String,
+        },
         status: {
             type: String,
             enum: Status,

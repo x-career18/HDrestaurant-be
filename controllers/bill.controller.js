@@ -26,7 +26,7 @@ const getBillById = async (req, res) => {
 // Tạo mới bill
 const createBill = async (req, res) => {
     try {
-        const { fullName, phoneNumber, dishes, discount, totalAmount, employeeCode, idRestaurant } = req.body;
+        const { fullName, phoneNumber, dishes, discount, totalAmount, employeeCode, idRestaurant, bookingId } = req.body;
 
         const newBill = new BillModel({
             fullName,
@@ -36,6 +36,7 @@ const createBill = async (req, res) => {
             totalAmount,
             employeeCode,
             idRestaurant,
+            bookingId,
         });
 
         const savedBill = await newBill.save();
