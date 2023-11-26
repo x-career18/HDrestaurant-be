@@ -9,6 +9,9 @@ router.get('/', BillController.getBill);
 // Lấy thông tin bill theo id
 router.get('/:id', BillController.getBillById);
 
+// Lấy thông tin bill theo bookingId
+router.get('/booking/:id', BillController.getBillByBooking);
+
 // Tạo mới bill
 router.post('/', BillController.createBill);
 
